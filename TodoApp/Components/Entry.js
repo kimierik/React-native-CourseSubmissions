@@ -5,7 +5,7 @@ import { useState } from "react";
 /**
  * An Entry to the list.
  * contains task text and buttons for done and delete 
- *
+ * this expects the function for the list deletion to be passed as an argument in props
  */
 export default function Entry(props){
     const NotDoneColor="#ff0000"
@@ -16,7 +16,7 @@ export default function Entry(props){
 
     //deletes the item from the list. this fn does not need to be passed
     function itemdel(){
-        props.delfn(props.item.id)
+        props.fns.del(props.item.id)
     }
 
     /**
@@ -29,11 +29,14 @@ export default function Entry(props){
 
     function UpdateColor(){
         SetColor(getCol());
+        props.fns.donePressed(props.item);
     }
+
+
 
     return(
         <View style={styles.EntryStyle}>
-            <Text> {props.item.content}</Text>
+            <Text style={styles.txtstyle}> {props.item.content}</Text>
             <Button title="delete" onPress={()=>{itemdel()}}></Button>
             <Button title="Done" onPress={()=>{props.item.done= !props.item.done;UpdateColor()}} color={Color} ></Button>
         </View>
@@ -43,6 +46,12 @@ export default function Entry(props){
 const styles = StyleSheet.create({
     EntryStyle:{
         padding:10,
+        margin:5,
+        borderBottomColor:"#000",
+        borderWidth:1,
+    },
+    txtstyle:{
+        textAlign:"center",
     }
 });
 

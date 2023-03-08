@@ -1,35 +1,19 @@
 import {useEffect, useState} from 'react'
-import { StatusBar } from 'expo-status-bar';
-import { ScrollView ,StyleSheet, Text, View ,Button , TextInput, SafeAreaView} from 'react-native';
-import Entry from './Components/Entry'
+import { ScrollView ,StyleSheet,  View  } from 'react-native';
 import { dbWrapper } from './Modules/DbWrapper';
 
+import Entry from './Components/Entry'
+import Header from './Components/Header';
 
 
-
-/*
-   {
-   content: the text
-   id: unique randomly generated id
-   done:bool ; the thing we check if the thing is done or not. this is needed bc this needs to be saved
-   thing:im pretty sure there was supposed to be some other filtering thying. that goes here
-   } 
-
-
-
-   this file needs to be split
-   too mutch logic in this one file
-   we probably can make it into a module and export it xd
-
-
-
-     */
 
 export default function App() {
-    const [getList,setList] = useState([]);
-    const [getText,setText] = useState("");
+    const [getList,setList] = useState([]);//list of all todo tasks
+    const [getText,setText] = useState("");//input text
+    
+    //this is either No Filter, Show done or show not done
+    //this is done with strings so that we can use the same string to display what filter you have selected
     const [filtertext,setFilterText] = useState("No Filter");
-
 
 
     //runs when the app starts. this is used to get all db data
@@ -46,24 +30,30 @@ export default function App() {
         return Math.random()*12345
     }
 
-    // submit the task to the list
+    /**
+    * submits the task that is written to the list
+    * */ 
     function submit(){
-        if (getText!==""){
-            setList( [ ...getList,
-                {
-                    content:getText,
-                    id:generateRandomId(),
-                    done:false
-                }
-            ]);
-                setText("");
-            }
+        if (getText===""){return;}
+        let ob=
+            {
+                content:getText,
+                id:generateRandomId().toString(),
+                done:false
+            };
+
+        setList( [ ...getList, ob ]);
+        setText("");
+
+        dbWrapper.storeData(ob);
+
     }
 
 
     /**
      * deletes all objects from the state list with a given id
      * there should only be one in the list but this will delete all 
+     * also deletes from the db
      * @param {string} deleteid  -  id to delete
     */
     async function del(deleteid){
@@ -73,11 +63,21 @@ export default function App() {
                     ...getList.slice(0, i),
                     ...getList.slice(i + 1, getList.length)
                 ]);
+                dbWrapper.DeleteSingle(deleteid);
             }
         }
-        //await AsyncStorage.removeItem(deleteid);
-
     }
+
+
+    /**
+     * this gets called when the done is pressed on any entry component
+     * @param {} object that was changed
+     */
+    function donePressed(object){
+        dbWrapper.DeleteSingle(object.id);
+        dbWrapper.storeData(object);
+    }
+
 
 
     //changes filter when pressed. also changes the text
@@ -94,17 +94,17 @@ export default function App() {
     }
 
 
-
     /**
     * @returns {[]}  list of objects that has been filtered
     * */
     function getFilteredList(){
-       let r=[]; 
+       let r=[]; //returned list init
 
         if(filtertext==="No Filter"){ 
             return getList;
         }
 
+        //logic
         if(filtertext==="Show not done"){ 
             for(var i =0;i<getList.length;i++){
                 if(getList[i].done==false){
@@ -127,25 +127,15 @@ export default function App() {
 
     //all Entries
     const elemts=getFilteredList().map((i)=>
-      <Entry item={i} key={i.id} delfn={del} ></Entry>
+      <Entry item={i} key={i.id} fns={{del,donePressed}}  ></Entry>
     )
 
 
   return (
     <View style={styles.container} >
-
         <View style={styles.head}>
-            <Text>TODO app</Text>
-
-            <View style={styles.Textview}>
-                <TextInput placeholder='todo input' maxLength={20} value={getText} onChangeText={setText} style={styles.Textfield} ></TextInput>
-            </View>
-
-            <Button title='Add to task list' onPress={()=>{submit()}}> </Button>
-            <Button title='save to mem' onPress={()=>{dbWrapper.ResetDb(getList)}}> </Button>
-            <Button title={filtertext} onPress={()=>{incrementFilter()}}> </Button>
-            <StatusBar style="auto" />
-
+            
+            <Header fns={{submit,filtertext,getText,setText, incrementFilter}}></Header>
 
             <ScrollView style={styles.scroll}>
                 {elemts}
@@ -173,14 +163,4 @@ const styles = StyleSheet.create({
     scroll:{
         width:200,
     },
-
-    Textview:{
-        borderWidth:2,
-        width:200,
-        borderColor:"#ff0000",
-    },
-    Textfield:{
-        padding:5,
-        alignContent:"center",
-    }
 });

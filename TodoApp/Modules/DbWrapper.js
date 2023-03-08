@@ -14,7 +14,6 @@ const dbWrapper={
      * @param {object} val this is the object you want to upload
      */
     storeData: async function (val){
-        console.log(val)
         try{
             const jsonval=JSON.stringify(val)
             await AsyncStorage.setItem(val.id.toString() ,jsonval);
@@ -42,6 +41,15 @@ const dbWrapper={
 
 
     /**
+    * deletes a single item
+    * @param {string} id id of the item that you want to delete
+    * */
+    DeleteSingle:function(id){
+        AsyncStorage.removeItem(id);
+    },
+
+
+    /**
      * deletes everything in the db and sets the list state to it
      * @param {list} getList the list you want to upload to the db 
      */
@@ -53,7 +61,6 @@ const dbWrapper={
         getList.map(async(item)=>{
             this.storeData(item);
         })
-
 
     }
 }
