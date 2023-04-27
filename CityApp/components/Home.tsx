@@ -6,12 +6,12 @@ import { ScrollView } from 'react-native';
 import CityElement from './CityElement';
 import { useState } from 'react';
 import { City } from '../types/City';
-import { createContext } from 'react';
+import { useContext } from 'react';
+
+import AppContext from '../modules/AppContext';
 
 
 
-
-export const AppContext=createContext({cits:[]});
 
 
 
@@ -19,11 +19,14 @@ export const AppContext=createContext({cits:[]});
 export default function Home(){
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParams>>();
 
-    const [cities, setCities]= useState<City[]>()
+    const asdf=useContext(AppContext)
 
-    const elements = cities?.map((i)=>
+
+
+    const elements = asdf.cities.map((i)=>
         <CityElement {...i}></CityElement>
     )
+    //works but needs refresh
 
 
 
@@ -35,6 +38,10 @@ export default function Home(){
           <Button
               title='+'
               onPress={()=>{navigation.navigate('AddCity')}}//navigates to thing with name
+          />
+          <Button
+              title='log'
+              onPress={()=>{console.log("asdf")}}//navigates to thing with name
           />
 
         <ScrollView>
