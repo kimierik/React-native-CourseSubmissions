@@ -23,7 +23,7 @@ type Cityparam={
 
 export default function CityElement(params:Cityparam){
     const [cname,setname] = useState(params.name)
-    const{name,country,locations,id}= params;
+    const {name,country,locations,id}=params
 
     const context=useContext(AppContext)
     
@@ -38,11 +38,12 @@ export default function CityElement(params:Cityparam){
         <Text>{params.country}</Text>
             <Button
                 title='gotoscre'
-                onPress={()=>{navigation.navigate('Locations',{city:({name,country,locations,id})})}}//navigates to thing with name
+                onPress={()=>{navigation.navigate('Locations',{city:({name,country,locations,id})})}}
             />
+
             <Button
                 title='delete'
-                onPress={()=>{context.removeCity(id);setname("deleted") ;params.fns.rerender();}}
+                onPress={()=>{context.removeCity(params.id);setname("deleted") ;params.fns.rerender();}}
             />
 
      </View>

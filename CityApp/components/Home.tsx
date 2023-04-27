@@ -41,9 +41,8 @@ export default function Home(){
 
 
     function rerender(){
-        console.log("rerender")
-        console.log(asdf.cities)
-        setrencities(asdf.cities)
+        asdf.cities=[...asdf.cities]// unfortunate mem nuke is needed to rerender properly
+        setrencities(asdf.cities as City[]) 
     }
 
 

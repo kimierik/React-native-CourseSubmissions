@@ -34,12 +34,22 @@ export default function Locations({route,navigation}:Props){
         }
     },[isfocused])
 
+    
+    function rerender(){
+        let cit=context.findCity(route.params.city.id).locations
+        cit=[...cit]// unfortunate mem nuke is needed to rerender properly
+        setlocations(cit)
+    }
 
 
     const elements=loclst.map((i)=>
     <View key={i.id}>
         <Text>{i.name}</Text>
         <Text>{i.content}</Text>
+        <Button
+        title='delete'
+        onPress={()=>{context.removeLocation(getcity().id, i.id);rerender()}}
+        />
     </View>
     )
 
