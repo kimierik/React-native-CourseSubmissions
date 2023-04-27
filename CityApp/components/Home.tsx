@@ -26,7 +26,6 @@ export default function Home(){
     )
 
 
-
     return (
      <View>
          <Text>this is home</Text>
