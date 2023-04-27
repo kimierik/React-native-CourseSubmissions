@@ -2,12 +2,18 @@ import {  Text, View, Button, ScrollView } from 'react-native';
 import RootStackParams from '../types/navigation';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import {City, Location} from '../types/City';
+import { useContext, useEffect, useState } from 'react';
+import {useIsFocused} from '@react-navigation/native'
 
+import AppContext from '../modules/AppContext';
 
 type Props=NativeStackScreenProps<RootStackParams,"Locations","what">
 
 export default function Locations({route,navigation}:Props){
     //const navigation = useNavigation<NativeStackNavigationProp<RootStackParams>>();
+    const isfocused=useIsFocused();
+    const [loclst,setlocations]=useState<Location[]>([]);
+    const asdf=useContext(AppContext)
 
     function location_lst():Location[]{
         if(route.params?.city.locations== undefined){
@@ -24,9 +30,16 @@ export default function Locations({route,navigation}:Props){
         }else return route.params.city;
     }
 
+    useEffect(()=>{
+        if(isfocused){
+          setlocations(location_lst())
+        }
+    },[isfocused])
 
-    const elements=location_lst().map((i)=>
-    <View>
+
+
+    const elements=loclst.map((i)=>
+    <View key={asdf.getid()}>
         <Text>{i.name}</Text>
         <Text>{i.content}</Text>
     </View>

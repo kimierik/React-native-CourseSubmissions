@@ -42,6 +42,7 @@ export default function Home(){
 
 
     useEffect(()=>{
+    console.log("home eggect")
         if(isfocused){
           setrencities(asdf.cities)
         }
