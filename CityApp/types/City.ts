@@ -6,6 +6,7 @@
 type Location={
     name:string;
     content:string;
+    id:string;
 }
 
 

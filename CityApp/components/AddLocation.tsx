@@ -14,10 +14,13 @@ export default function AddLocation({route,navigation}:Props){
 //this ptrob should have a refrence to the city that the location is being added to so that it goes to the propper place
     const [locationName, setlocationname]=useState<string>("lahti");
     const [locationContent, setLocationContent]=useState<string>("suomi");
+
     const cit=route.params.city
     const cont=useContext(AppContext);
-    const c=cont.findCity(cont.cities,cit.id);
-    console.log(cont.cities)
+    const c=cont.findCity(cit.id);
+    
+    const context=useContext(AppContext)
+
 
 
 
@@ -30,17 +33,17 @@ export default function AddLocation({route,navigation}:Props){
 
         const loca={
             name:locationName,
-            content:locationContent
+            content:locationContent,
+            id:context.getid(),
         }
+
         if (c.locations==undefined){
             const lst:Location[]=[];
             lst.push(loca as Location)//wtf is happening
-            c.locations = lst //this does not go through 
+            c.locations = [...lst] //this does not go through 
             //something changes
-
-            console.log("undefined is")
-            console.log(cit.locations)
-            console.log(cit)
+            console.log(c.locations)
+            console.log(c)
             console.log(lst)
 
         }else{

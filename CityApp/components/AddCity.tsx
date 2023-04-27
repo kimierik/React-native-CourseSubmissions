@@ -22,10 +22,9 @@ export default function AddCity(){
             locations:undefined,
             id:asdf.getid()
         }
-        asdf.cities.push(cit as City)
-
-            
-
+        const narr=[...asdf.cities]
+        narr.push(cit);
+        asdf.cities=narr;// memory nuke
         }}/>
 
      </View>

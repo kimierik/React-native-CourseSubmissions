@@ -11,17 +11,11 @@ type Props=NativeStackScreenProps<RootStackParams,"Locations","what">
 
 export default function Locations({route,navigation}:Props){
     //const navigation = useNavigation<NativeStackNavigationProp<RootStackParams>>();
+    const context = useContext(AppContext)
     const isfocused=useIsFocused();
     const [loclst,setlocations]=useState<Location[]>([]);
-    const asdf=useContext(AppContext)
 
-    function location_lst():Location[]{
-        if(route.params?.city.locations== undefined){
-            const a:Location[] =[];
-            return a;
-        }else return route.params.city.locations;
-    }
-
+    
     
     function getcity():City{//hesus cristus
         if(route.params?.city== undefined){
@@ -32,14 +26,18 @@ export default function Locations({route,navigation}:Props){
 
     useEffect(()=>{
         if(isfocused){
-          setlocations(location_lst())
+        console.log("location focus")
+          if(context.findCity(route.params.city.id).locations!=undefined){
+
+          setlocations(context.findCity(route.params.city.id).locations)
+          }
         }
     },[isfocused])
 
 
 
     const elements=loclst.map((i)=>
-    <View key={asdf.getid()}>
+    <View key={i.id}>
         <Text>{i.name}</Text>
         <Text>{i.content}</Text>
     </View>

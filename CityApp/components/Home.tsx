@@ -4,7 +4,7 @@ import { NavigationContainer, useNavigation} from '@react-navigation/native';
 import RootStackParams from '../types/navigation';
 import { ScrollView } from 'react-native';
 import CityElement from './CityElement';
-import { useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { City } from '../types/City';
 import { useContext } from 'react';
 
@@ -16,6 +16,9 @@ import {useIsFocused} from '@react-navigation/native'
 
 
 
+const cityContext=createContext('');
+
+export {cityContext}
 
 //has list of cities and button to add cities
 export default function Home(){
@@ -24,50 +27,29 @@ export default function Home(){
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParams>>();
 
     const asdf=useContext(AppContext)
-
     //do we do hook. update hook on 
 
 
 
-/*
-    useFocusEffect(()=>{
-        console.log("focus event")
-        setrencities(asdf.cities);
-    })
- * */
-
-/*
-
- * */
 
 
     useEffect(()=>{
-    console.log("home eggect")
         if(isfocused){
           setrencities(asdf.cities)
         }
     },[isfocused])
 
 
-
-
-    //whenever we add or come back to this page we need to re render the elements
-    //since they are probably updated
-    //i want to render shit when something changes on another screen
-    //use focus runs but does not seem to be able to set state
-    //idk man fix this later
-    //idk if context provider is the thing we need to be doing
-    //something rerenders when somehting happens so we could be able to use that one
-    //
-    //idk if im looking at old shit
-    //seems to work ok
-    //except does not have any re renders
-
+    function rerender(){
+        console.log("rerender")
+        console.log(asdf.cities)
+        setrencities(asdf.cities)
+    }
 
 
     const elements = rencities.map((i)=>
-        <CityElement {...i} key={asdf.getid()}></CityElement>
-    )
+        <CityElement {...i} key={asdf.getid()} fns={{rerender}} ></CityElement>
+    )//again you are not being reactive
     
 
     return (
@@ -78,20 +60,20 @@ export default function Home(){
               title='+'
               onPress={()=>{navigation.navigate('AddCity')}}//navigates to thing with name
           />
+
           <Button
               title='log'
               onPress={()=>{
-              console.log("asdf.ciries")
+              console.log("log button")
               console.log(asdf.cities)
-              console.log("ren")
               console.log(rencities)
-              setrencities(asdf.cities)
+              console.log("log end")
               }}//navigates to thing with name
           />
 
 
         <ScrollView>
-            {elements}
+                {elements}
         </ScrollView>
         
      </SafeAreaView>

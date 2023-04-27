@@ -11,7 +11,7 @@ type RootStackParams={
     AddCity:undefined;
     AddLocation:{city:City};
     Info:undefined;
-    Locations:undefined|{city:City};// location data
+    Locations:{city:City};// location data
 }
 
 

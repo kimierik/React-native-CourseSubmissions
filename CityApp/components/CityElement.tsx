@@ -8,32 +8,42 @@ import { Location } from '../types/City';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { NavigationContainer, useNavigation} from '@react-navigation/native';
 
+import { useContext, useState } from 'react';
+import AppContext from '../modules/AppContext';
 
 //is the city elemnent in home that you can press to open cities
-export default function CityElement(params:City){
+
+type Cityparam={
+    name:string;
+    country:string;
+    locations: undefined | Location[];
+    id:string;
+    fns:{rerender:Function}
+}
+
+export default function CityElement(params:Cityparam){
+    const [cname,setname] = useState(params.name)
+    const{name,country,locations,id}= params;
+
+    const context=useContext(AppContext)
     
 
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParams>>();
 
 
-    function getlocsa():Location[]{//hesus cristus
-        if(params.locations == undefined){
-            let a:Location[]=[];
-            return a;
-        }else return params.locations;
-    }
-
-
-
 
     return (
      <View>
-        <Text>{params.name}</Text>
+        <Text>{cname}</Text>
         <Text>{params.country}</Text>
-          <Button
-              title='gotoscre'
-              onPress={()=>{navigation.navigate('Locations',{city:(params)})}}//navigates to thing with name
-          />
+            <Button
+                title='gotoscre'
+                onPress={()=>{navigation.navigate('Locations',{city:({name,country,locations,id})})}}//navigates to thing with name
+            />
+            <Button
+                title='delete'
+                onPress={()=>{context.removeCity(id);setname("deleted") ;params.fns.rerender();}}
+            />
 
      </View>
     )
