@@ -32,7 +32,7 @@ export default function CityElement(params:City){
         <Text>{params.country}</Text>
           <Button
               title='gotoscre'
-              onPress={()=>{navigation.navigate('Locations',{locs:getlocsa()})}}//navigates to thing with name
+              onPress={()=>{navigation.navigate('Locations',{city:(params)})}}//navigates to thing with name
           />
 
      </View>

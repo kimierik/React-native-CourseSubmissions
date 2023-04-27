@@ -1,16 +1,26 @@
 import {  Text, View, Button, ScrollView } from 'react-native';
 import RootStackParams from '../types/navigation';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import {Location} from '../types/City';
+import {City, Location} from '../types/City';
 
 
 type Props=NativeStackScreenProps<RootStackParams,"Locations","what">
 
 export default function Locations({route,navigation}:Props){
     //const navigation = useNavigation<NativeStackNavigationProp<RootStackParams>>();
-    const lst=route.params?.locs;
+    const location_lst=route.params?.city.locations;
 
-    const elements=lst?.map((i)=>
+
+    
+    function getcity():City{//hesus cristus
+        if(route.params?.city== undefined){
+            let a:City={name:"error city",country:"error country",locations:undefined}; //debug
+            return a;
+        }else return route.params.city;
+    }
+
+
+    const elements=location_lst?.map((i)=>
     <View>
         <Text>{i.name}</Text>
         <Text>{i.content}</Text>
@@ -25,8 +35,8 @@ export default function Locations({route,navigation}:Props){
 
 
           <Button
-              title='gotoscre'
-              onPress={()=>{navigation.navigate('AddLocation')}}//navigates to thing with name
+              title='add locations to'
+              onPress={()=>{navigation.navigate('AddLocation',{city:getcity()})}}//navigates to thing with name
           />
 
      </View>

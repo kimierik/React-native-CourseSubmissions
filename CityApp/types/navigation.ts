@@ -1,5 +1,5 @@
 
-import { Location } from "./City";
+import { City, Location } from "./City";
 
 
 // these are the paraeters that each thing wants
@@ -9,9 +9,9 @@ type RootStackParams={
     Second:undefined;
     Home:undefined;
     AddCity:undefined;
-    AddLocation:undefined;
+    AddLocation:{city:City};
     Info:undefined;
-    Locations:undefined|{locs:Location[]};// location data
+    Locations:undefined|{city:City};// location data
 }
 
 
