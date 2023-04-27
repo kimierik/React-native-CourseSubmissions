@@ -3,12 +3,8 @@ import {useContext, useState} from 'react';
 import {  Text, View , TextInput, Button} from 'react-native';
 import AppContext from '../modules/AppContext';
 import {City} from '../types/City';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import RootStackParams from '../types/navigation';
 
-type Props=NativeStackScreenProps<RootStackParams,"Locations","what">
-
-export default function AddCity({route,navigation}:Props){
+export default function AddCity(){
     const [cityName, setCityname]=useState<string>("lahti");
     const [cityCountry, setCityCountry]=useState<string>("suomi");
     const asdf =useContext(AppContext)
@@ -23,7 +19,8 @@ export default function AddCity({route,navigation}:Props){
         const cit={
             name:cityName,
             country:cityCountry,
-            locations:undefined
+            locations:undefined,
+            id:asdf.getid()
         }
         asdf.cities.push(cit as City)
 

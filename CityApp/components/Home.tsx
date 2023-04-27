@@ -4,13 +4,15 @@ import { NavigationContainer, useNavigation} from '@react-navigation/native';
 import RootStackParams from '../types/navigation';
 import { ScrollView } from 'react-native';
 import CityElement from './CityElement';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { City } from '../types/City';
 import { useContext } from 'react';
 
 import AppContext from '../modules/AppContext';
-import {useFocusEffect} from '@react-navigation/native'
-import { useCallback } from 'react';
+
+import { SafeAreaView } from 'react-native';
+
+import {useIsFocused} from '@react-navigation/native'
 
 
 
@@ -18,49 +20,58 @@ import { useCallback } from 'react';
 //has list of cities and button to add cities
 export default function Home(){
     const [rencities, setrencities] = useState<City[]>([])
+    const isfocused= useIsFocused()
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParams>>();
 
     const asdf=useContext(AppContext)
 
     //do we do hook. update hook on 
 
-    function getid():string{
-        return Math.random().toString();
-    }
+
+
+/*
+    useFocusEffect(()=>{
+        console.log("focus event")
+        setrencities(asdf.cities);
+    })
+ * */
+
+/*
+
+ * */
+
+
+    useEffect(()=>{
+        if(isfocused){
+          setrencities(asdf.cities)
+        }
+    },[isfocused])
 
 
 
-    //works but needs refresh uise effect? idk man use focus effect hook i quess
 
-    useFocusEffect(
-        useCallback(()=>{
-
-            console.log(rencities)
-            setrencities(asdf.cities as City[]);
-            console.log(rencities)
-            console.log(asdf.cities as City[])
-
-            setrencities(asdf.cities);
-            console.log(rencities)
-            //how the fuck is rencities not set i actually do not get it
-            //how the fuck is this possible. i hate this library
+    //whenever we add or come back to this page we need to re render the elements
+    //since they are probably updated
+    //i want to render shit when something changes on another screen
+    //use focus runs but does not seem to be able to set state
+    //idk man fix this later
+    //idk if context provider is the thing we need to be doing
+    //something rerenders when somehting happens so we could be able to use that one
+    //
+    //idk if im looking at old shit
+    //seems to work ok
+    //except does not have any re renders
 
 
-            return()=>{
-                console.log("unfocussed")
-            }
-        },[])
-    );
 
     const elements = rencities.map((i)=>
-        <CityElement {...i} key={getid()}></CityElement>
+        <CityElement {...i} key={asdf.getid()}></CityElement>
     )
     
 
     return (
-     <View>
+     <SafeAreaView>
          <Text>this is home</Text>
-        
 
           <Button
               title='+'
@@ -69,17 +80,20 @@ export default function Home(){
           <Button
               title='log'
               onPress={()=>{
-              console.log("asdf")
+              console.log("asdf.ciries")
               console.log(asdf.cities)
               console.log("ren")
               console.log(rencities)
+              setrencities(asdf.cities)
               }}//navigates to thing with name
           />
+
 
         <ScrollView>
             {elements}
         </ScrollView>
+        
+     </SafeAreaView>
 
-     </View>
     )
 }

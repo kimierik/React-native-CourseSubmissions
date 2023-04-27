@@ -13,6 +13,7 @@ type City={
     name:string;
     country:string;
     locations: undefined | Location[];
+    id:string;
 }
 
 
