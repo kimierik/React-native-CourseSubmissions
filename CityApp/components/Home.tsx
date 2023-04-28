@@ -15,6 +15,7 @@ import { SafeAreaView } from 'react-native';
 
 import {useIsFocused} from '@react-navigation/native'
 import { dbWrapper } from '../modules/DbWrapper';
+import { ListStyles } from '../styles/Lists';
 
 
 
@@ -81,15 +82,15 @@ export default function Home(){
 
 
     return (
-     <SafeAreaView style={styles.container}>
-         <Text style={styles.title}>List of cities around the world</Text>
+     <SafeAreaView style={ListStyles.container}>
+         <Text style={ListStyles.title}>List of cities around the world</Text>
 
 
-        <ScrollView style={styles.scroll }>
+        <ScrollView style={ListStyles.scroll }>
                 {elements}
         </ScrollView>
 
-        <View style={styles.budden}>
+        <View style={ListStyles.budden}>
 
           <Button
               title='add Cities'
@@ -103,24 +104,3 @@ export default function Home(){
 }
 
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  scroll:{
-    width:'100%',
-  },
-
-    budden:{
-        width:'100%',
-    },
-    title:{
-        fontSize:24,
-    }
-
-
-
-});

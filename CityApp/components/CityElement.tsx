@@ -8,6 +8,7 @@ import { StyleSheet } from 'react-native';
 
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { NavigationContainer, useNavigation} from '@react-navigation/native';
+import { ElementStyles } from '../styles/Elements';
 
 import { useContext, useState } from 'react';
 import AppContext from '../modules/AppContext';
@@ -33,15 +34,15 @@ export default function CityElement(params:Cityparam){
 
 
     return (
-     <View style={styles.container}>
-        <View style={styles.innerConteinaer}>
+     <View style={ElementStyles.container}>
+        <View style={ElementStyles.innerConteinaer}>
 
-            <View style={styles.txt}>
-                <Text style={styles.name}>{cname}</Text>
+            <View style={ElementStyles.txt}>
+                <Text style={ElementStyles.name}>{cname}</Text>
                 <Text>{params.country}</Text>
             </View>
 
-            <View style={styles.buttons}>
+            <View style={ElementStyles.buttons}>
                 <Button
                     title='locations'
                     onPress={()=>{navigation.navigate('Locations',{city:({name,country,locations,id})})}}
@@ -60,35 +61,4 @@ export default function CityElement(params:Cityparam){
 }
 
 
-
-const styles = StyleSheet.create({
-    container: {
-        flex:1,
-        backgroundColor: '#fff',
-        alignItems: 'flex-start',
-        justifyContent: 'center',
-
-        borderColor:'#000',
-        borderWidth:1,
-    },
-    innerConteinaer:{
-        width:'100%',
-        flexDirection:'row',
-    },
-
-    txt:{
-        width:'70%',
-        paddingLeft:20,
-    },
-
-    name:{
-        fontSize:24,
-    },
-
-    buttons:{
-        width:'30%',
-    }
-
-
-})
 

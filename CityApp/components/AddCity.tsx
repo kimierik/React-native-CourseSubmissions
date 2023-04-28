@@ -5,6 +5,8 @@ import AppContext from '../modules/AppContext';
 import {City} from '../types/City';
 import { dbWrapper } from '../modules/DbWrapper';
 
+import { AddScreenStyle } from '../styles/Adds';
+
 export default function AddCity(){
     const [cityName, setCityname]=useState<string>("");
     const [cityCountry, setCityCountry]=useState<string>("");
@@ -25,13 +27,13 @@ export default function AddCity(){
 
 
     return (
-     <View style={styles.container}>
-        <View style={styles.inputs}>
-            <TextInput style={styles.tinp} onChangeText={setCityname} value={cityName} placeholder='city name' ></TextInput>
-            <TextInput style={styles.tinp} onChangeText={setCityCountry} value={cityCountry} placeholder='country' ></TextInput>
+     <View style={AddScreenStyle.container}>
+        <View style={AddScreenStyle.inputs}>
+            <TextInput style={AddScreenStyle.tinp} onChangeText={setCityname} value={cityName} placeholder='city name' ></TextInput>
+            <TextInput style={AddScreenStyle.tinp} onChangeText={setCityCountry} value={cityCountry} placeholder='country' ></TextInput>
         </View>
 
-        <View style={styles.budden}>
+        <View style={AddScreenStyle.budden}>
             <Button title='add city' onPress={()=>{buttonHandler() }}/>
         </View>
 
@@ -42,31 +44,3 @@ export default function AddCity(){
 
 
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-
-    inputs:{
-        flex:1,
-        width:'90%',
-    },
-    tinp:{
-        height:'15%',
-        paddingLeft:20,
-        borderColor:'#000',
-        borderWidth:2,
-        fontSize:20,
-    },
-
-    budden:{
-        width:'100%',
-    },
-    title:{
-        fontSize:24,
-    }
-
-});

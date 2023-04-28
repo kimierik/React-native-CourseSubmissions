@@ -8,6 +8,11 @@ import {useIsFocused} from '@react-navigation/native'
 
 import AppContext from '../modules/AppContext';
 
+
+import LocationElement from './LocationElement';
+import { ListStyles } from '../styles/Lists';
+
+
 type Props=NativeStackScreenProps<RootStackParams,"Locations","what">
 
 export default function Locations({route,navigation}:Props){
@@ -45,48 +50,21 @@ export default function Locations({route,navigation}:Props){
 
 
     const elements=loclst.map((i)=>
-        <View key={i.id} style={styles.container}>
-            <View style={styles.innerConteinaer}>
-
-                <View style={styles.txt}> 
-                    <Text style={styles.name}>{i.name}</Text>
-                    <Text>{i.content}</Text>
-                </View>
-                <View style={styles.buttons}>
-
-                    <Button
-                        title='edit'
-                        onPress={()=>{
-                            //context.removeLocation(getcity().id, i.id);
-                            //maybe not delete
-                            //if not null delete when add cityew
-                            rerender();
-                            navigation.navigate('AddLocation',{city:getcity(),replocation:i})
-                            }}
-                    />
-                    <Button
-                        title='delete'
-                        color={'red'}
-                        onPress={()=>{context.removeLocation(getcity().id, i.id);rerender()}}
-                    />
-                </View>
-
-            </View>
-        </View>
+        <LocationElement {...i} key={i.id} fns={{rerender, getcity}} />
     )
 
 
 
     return (
-     <View style={styles.container}>
-        <Text style={styles.title}>these are the locations of {getcity().name}</Text>
+     <View style={ListStyles.container}>
+        <Text style={ListStyles.title}>these are the locations of {getcity().name}</Text>
 
 
-        <ScrollView>
+        <ScrollView style={ListStyles.scroll}>
             {elements}
         </ScrollView>
 
-        <View style={styles.budden}>
+        <View style={ListStyles.budden}>
           <Button
               title='add locations'
               onPress={()=>{navigation.navigate('AddLocation',{city:getcity(),replocation:undefined})}}//navigates to thing with name
@@ -101,47 +79,4 @@ export default function Locations({route,navigation}:Props){
 
 
 
-
-const styles = StyleSheet.create({
-    container: {
-        flex:1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-
-        borderColor:'#000',
-        borderWidth:1,
-    },
-    innerConteinaer:{
-        width:'100%',
-        flexDirection:'row',
-        
-    },
-
-    txt:{
-        width:'70%',
-        paddingLeft:20,
-    },
-
-    name:{
-        fontSize:24,
-    },
-
-    del:{
-        color:'red'
-    },
-
-    buttons:{
-        width:'30%',
-    },
-
-    budden:{
-        width:'100%',
-    },
-
-    title:{
-        fontSize:24,
-    },
-
-})
 

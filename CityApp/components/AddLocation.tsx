@@ -1,8 +1,8 @@
 
 import {  Text, View, TextInput, Button} from 'react-native';
 import { useContext, useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
 
+import { AddScreenStyle } from '../styles/Adds';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import RootStackParams from '../types/navigation';
 
@@ -64,15 +64,15 @@ export default function AddLocation({route,navigation}:Props){
 
 
     return (
-     <View style={styles.container}>
-        <Text style={styles.title}>add locations to {route.params.city.name}</Text>
-        <View style={styles.inputs}>
-            <TextInput style={styles.tinp} onChangeText={setlocationname} value={locationName} placeholder='Location name' ></TextInput>
-            <TextInput style={styles.tinp} onChangeText={setLocationContent} value={locationContent} placeholder='what to do at the location' ></TextInput>
+     <View style={AddScreenStyle.container}>
+        <Text style={AddScreenStyle.title}>add locations to {route.params.city.name}</Text>
+        <View style={AddScreenStyle.inputs}>
+            <TextInput style={AddScreenStyle.tinp} onChangeText={setlocationname} value={locationName} placeholder='Location name' ></TextInput>
+            <TextInput style={AddScreenStyle.tinp} onChangeText={setLocationContent} value={locationContent} placeholder='what to do at the location' ></TextInput>
         </View>
 
-        <View style={styles.budden}>
-            <Button title='add location' onPress={()=>{buttonHandler() }}/>
+        <View style={AddScreenStyle.budden}>
+            <Button title='add location' onPress={()=>{buttonHandler()}}/>
         </View>
 
      </View>
@@ -83,34 +83,3 @@ export default function AddLocation({route,navigation}:Props){
 
 
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-
-    inputs:{
-        flex:1,
-        width:'90%',
-        
-    },
-    tinp:{
-        height:'15%',
-        paddingLeft:20,
-        borderColor:'#000',
-        borderWidth:2,
-        fontSize:20,
-    },
-
-    budden:{
-        width:'100%',
-    },
-    title:{
-        alignItems:'center',
-        justifyContent: 'center',
-        fontSize:24,
-    }
-
-});
