@@ -14,7 +14,7 @@ import { dbWrapper } from '../modules/DbWrapper';
 
 
 type Props=NativeStackScreenProps<RootStackParams,"AddLocation","what">
-export default function AddLocation({route,navigation}:Props){
+export default function AddLocation({route}:Props){
     const [locationName, setlocationname]=useState<string>("");
     const [locationContent, setLocationContent]=useState<string>("");
     const context=useContext(AppContext)
@@ -22,7 +22,6 @@ export default function AddLocation({route,navigation}:Props){
     const isEditing= route.params.replocation!=undefined;
 
     const c=context.findCity(route.params.city.id);//this is recalled
-
 
 
     useEffect(()=>{

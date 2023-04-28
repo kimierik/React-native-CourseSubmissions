@@ -4,12 +4,11 @@ import { useNavigation} from '@react-navigation/native';
 import RootStackParams from '../types/navigation';
 import { ScrollView } from 'react-native';
 import CityElement from './CityElement';
-import { createContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { City } from '../types/City';
 import { useContext } from 'react';
 
 import AppContext from '../modules/AppContext';
-import { StyleSheet } from 'react-native';
 
 import { SafeAreaView } from 'react-native';
 
@@ -25,7 +24,7 @@ import { ListStyles } from '../styles/Lists';
 
 //has list of cities and button to add cities
 export default function Home(){
-    const [rencities, setrencities] = useState<City[]>([])
+    const [cities, setCities] = useState<City[]>([])
     const isfocused= useIsFocused()
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParams>>();
 
@@ -33,16 +32,15 @@ export default function Home(){
     //do we do hook. update hook on 
 
 
-
+    //loads data from db and set it to the screen
     async function setdata(){
         const data=await dbWrapper.LoadDB();
         context.updateCities()
-        setrencities(data)
+        setCities(data)
     }
 
-    
 
-
+    //whe we focus we load data from the database
     useEffect(()=>{
         if(isfocused){
             setdata()
@@ -50,35 +48,16 @@ export default function Home(){
     },[isfocused])
 
 
-    function rerender(){
+    //re render cities
+    function reRender(){
         context.cities=[...context.cities]// unfortunate mem nuke is needed to rerender properly
-        setrencities(context.cities as City[]) 
+        setCities(context.cities as City[]) 
     }
 
-
-    const elements = rencities.map((i)=>
-        <CityElement {...i} key={context.getid()} fns={{rerender}} ></CityElement>
-    )//again you are not being reactive
-    
-
-        //hoarded debug code
-    /*
-     *
-          async function logdb(){console.log( await dbWrapper.LoadDB())}
-          <Button
-              title='log'
-              onPress={()=>{
-              console.log("log button")
-              console.log(context.cities)
-              console.log(rencities)
-              logdb()
-              console.log("log end")
-              }}//navigates to thing with name
-          />
-      */
-
-
-
+    //all city elements
+    const elements = cities.map((i)=>
+        <CityElement {...i} key={context.getid()} fns={{reRender}} ></CityElement>
+    )
 
 
     return (

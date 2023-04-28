@@ -6,7 +6,8 @@ export default function Info(){
      <View>
 
         <Text>
-        this is app made by me in beta versions 
+            app made by kimi
+            version 0.1.0
         </Text>
 
      </View>

@@ -1,8 +1,6 @@
-import { StyleSheet } from 'react-native';
 import {useContext, useState} from 'react';
-import {  Text, View , TextInput, Button} from 'react-native';
+import { View , TextInput, Button} from 'react-native';
 import AppContext from '../modules/AppContext';
-import {City} from '../types/City';
 import { dbWrapper } from '../modules/DbWrapper';
 
 import { AddScreenStyle } from '../styles/Adds';
@@ -19,7 +17,7 @@ export default function AddCity(){
             locations:undefined,
             id:context.getid()
         }
-        const narr=[...context.cities]// mem nuke was needed for something
+        const narr=[...context.cities]// spread was needed for something
         narr.push(cit);
         context.cities=narr;
         dbWrapper.ResetDb(context.cities)

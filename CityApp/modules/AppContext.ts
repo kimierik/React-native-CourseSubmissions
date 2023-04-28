@@ -1,7 +1,6 @@
-import { createContext, useContext, useState } from "react";
+import { createContext } from "react";
 import { City } from "../types/City";
 
-import { Location } from "../types/City";
 import { dbWrapper } from "./DbWrapper";
 
 
@@ -19,21 +18,27 @@ interface thing{
 
 
 
-//db interaction
-//editing. deletes the current one and overrides it with the new one
-//edit location just deletes it and moves you to add locations screen i quess
-// allthough we should populate name and things with the things we have
 const defs : thing={
     cities:[],
-    //helper
+
+    /*
+    * generates random id
+    * */
     getid:()=>{ return Math.random().toString(); },
 
     
+    /*
+    * Loads db data to cities array
+    * */
     updateCities:async function(){
         const data = await dbWrapper.LoadDB()
         this.cities=data;
     },
 
+
+    /*
+    * returns city ref with id
+    * */
     findCity:function(id:string):City|undefined{
         let item=undefined
         this.cities.map((i)=>{
@@ -46,6 +51,10 @@ const defs : thing={
 
     },
 
+
+    /*
+    * deletes from db and cities array
+    * */
     removeCity:function(id:string){
         this.cities.map((item,index)=>{
             if(id==item.id){
@@ -56,14 +65,15 @@ const defs : thing={
     },
 
 
+    /*
+    * removes location from city
+    * */
     removeLocation:function(cityId:string,locationId:string){
         const city =this.findCity(cityId) as City
         if(city?.locations!=undefined){
             city.locations.map((i,index)=>{
                 if(locationId==i.id) {
                     city.locations?.splice(index,1)
-                    //do something to dbwrapper
-                    //relete the city and reup it i think
                     dbWrapper.DeleteSingle(city.id);
                     dbWrapper.storeData(city);
                     }
@@ -77,8 +87,6 @@ const defs : thing={
 export {defs}
 
 const AppContext=createContext(defs);
-
-
 
 
 export default AppContext;

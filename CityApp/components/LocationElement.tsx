@@ -1,18 +1,11 @@
 
-
-import {  Text, View , ScrollView, Button} from 'react-native';
-import {City} from '../types/City';
+import {  Text, View , Button} from 'react-native';
 import RootStackParams from '../types/navigation';
-
-import { Location } from '../types/City';
-import { StyleSheet } from 'react-native';
-
-import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { NavigationContainer, useNavigation} from '@react-navigation/native';
-
-import { useContext, useState } from 'react';
+import {  NativeStackNavigationProp } from '@react-navigation/native-stack';
 import AppContext from '../modules/AppContext';
 
+import { useContext} from 'react';
+import {  useNavigation} from '@react-navigation/native';
 //is the city elemnent in home that you can press to open cities
 
 import { ElementStyles } from '../styles/Elements';
@@ -22,7 +15,7 @@ type locationparam={
     name:string;
     content:string;
     id:string;
-    fns:{rerender:Function,getcity:Function}
+    fns:{reRender:Function,getcity:Function}
 }
 
 export default function LocationElement(params:locationparam){
@@ -47,17 +40,17 @@ export default function LocationElement(params:locationparam){
                     <Button
                         title='edit'
                         onPress={()=>{
-                            //context.removeLocation(getcity().id, i.id);
-                            //maybe not delete
-                            //if not null delete when add cityew
-                            params.fns.rerender();
-                            navigation.navigate('AddLocation',{city:params.fns.getcity(),replocation:{name,content,id}})
+                                params.fns.reRender();
+                                navigation.navigate('AddLocation',{city:params.fns.getcity(),replocation:{name,content,id}})
                             }}
                     />
                     <Button
                         title='delete'
                         color={'red'}
-                        onPress={()=>{context.removeLocation(params.fns.getcity().id, params.id);params.fns.rerender()}}
+                        onPress={()=>{
+                            context.removeLocation(params.fns.getcity().id, params.id);
+                            params.fns.reRender()
+                        }}
                     />
                 </View>
 
