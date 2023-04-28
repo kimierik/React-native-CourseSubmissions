@@ -15,6 +15,7 @@ import { SafeAreaView } from 'react-native';
 import {useIsFocused} from '@react-navigation/native'
 
 
+import { dbWrapper } from '../modules/DbWrapper';
 
 const cityContext=createContext('');
 
@@ -26,28 +27,36 @@ export default function Home(){
     const isfocused= useIsFocused()
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParams>>();
 
-    const asdf=useContext(AppContext)
+    const context=useContext(AppContext)
     //do we do hook. update hook on 
 
 
 
+    async function setdata(){
+        const data=await dbWrapper.LoadDB();
+        context.updateCities()
+        setrencities(data)
+    }
+
+    
 
 
     useEffect(()=>{
         if(isfocused){
-          setrencities(asdf.cities)
+            setdata()
         }
     },[isfocused])
 
 
     function rerender(){
-        asdf.cities=[...asdf.cities]// unfortunate mem nuke is needed to rerender properly
-        setrencities(asdf.cities as City[]) 
+        context.cities=[...context.cities]// unfortunate mem nuke is needed to rerender properly
+        setrencities(context.cities as City[]) 
     }
 
+  async function logdb(){console.log( await dbWrapper.LoadDB())}
 
     const elements = rencities.map((i)=>
-        <CityElement {...i} key={asdf.getid()} fns={{rerender}} ></CityElement>
+        <CityElement {...i} key={context.getid()} fns={{rerender}} ></CityElement>
     )//again you are not being reactive
     
 
@@ -64,8 +73,9 @@ export default function Home(){
               title='log'
               onPress={()=>{
               console.log("log button")
-              console.log(asdf.cities)
+              console.log(context.cities)
               console.log(rencities)
+              logdb()
               console.log("log end")
               }}//navigates to thing with name
           />

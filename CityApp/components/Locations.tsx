@@ -18,18 +18,19 @@ export default function Locations({route,navigation}:Props){
     
     
     function getcity():City{//hesus cristus
+        
         if(route.params?.city== undefined){
-            let a:City={id:"errorid",name:"error city",country:"error country",locations:undefined}; //debug
+            //city should never be undefined but if it iss this will stop the app from self destructing
+            let a:City={id:"errorid",name:"error city",country:"error country",locations:undefined}; 
             return a;
         }else return route.params.city;
     }
 
     useEffect(()=>{
         if(isfocused){
-        console.log("location focus")
+        //console.log("location focus")
           if(context.findCity(route.params.city.id).locations!=undefined){
-
-          setlocations(context.findCity(route.params.city.id).locations)
+              setlocations(context.findCity(route.params.city.id).locations)
           }
         }
     },[isfocused])
@@ -43,14 +44,25 @@ export default function Locations({route,navigation}:Props){
 
 
     const elements=loclst.map((i)=>
-    <View key={i.id}>
-        <Text>{i.name}</Text>
-        <Text>{i.content}</Text>
-        <Button
-        title='delete'
-        onPress={()=>{context.removeLocation(getcity().id, i.id);rerender()}}
-        />
-    </View>
+        <View key={i.id}>
+            <Text>{i.name}</Text>
+            <Text>{i.content}</Text>
+            <Button
+                title='delete'
+                onPress={()=>{context.removeLocation(getcity().id, i.id);rerender()}}
+            />
+
+            <Button
+                title='edit'
+                onPress={()=>{
+                    context.removeLocation(getcity().id, i.id);
+                    rerender();
+                    console.log("before addlocaton")
+                    navigation.navigate('AddLocation',{city:getcity(),replocation:i})
+                    }}
+            />
+
+        </View>
     )
 
     return (
@@ -65,7 +77,7 @@ export default function Locations({route,navigation}:Props){
 
           <Button
               title='add locations to'
-              onPress={()=>{navigation.navigate('AddLocation',{city:getcity()})}}//navigates to thing with name
+              onPress={()=>{navigation.navigate('AddLocation',{city:getcity(),replocation:undefined})}}//navigates to thing with name
           />
 
      </View>

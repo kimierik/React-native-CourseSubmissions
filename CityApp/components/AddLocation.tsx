@@ -1,25 +1,39 @@
 
 import {  Text, View, TextInput, Button} from 'react-native';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import RootStackParams from '../types/navigation';
 
 import { Location } from '../types/City';
 import AppContext from '../modules/AppContext';
+import {useIsFocused} from '@react-navigation/native'
+
+import { dbWrapper } from '../modules/DbWrapper';
 
 
 type Props=NativeStackScreenProps<RootStackParams,"AddLocation","what">
 export default function AddLocation({route,navigation}:Props){
 //this ptrob should have a refrence to the city that the location is being added to so that it goes to the propper place
-    const [locationName, setlocationname]=useState<string>("lahti");
-    const [locationContent, setLocationContent]=useState<string>("suomi");
-
+    const [locationName, setlocationname]=useState<string>("");
+    const [locationContent, setLocationContent]=useState<string>("");
     const cit=route.params.city
     const cont=useContext(AppContext);
-    const c=cont.findCity(cit.id);
-    
+
+    const c=cont.findCity(cit.id);//this is recalled
+
     const context=useContext(AppContext)
+    const isfocused=useIsFocused()
+
+    //use effect if this does not work the way i want it to work
+    useEffect(()=>{
+        if(isfocused){
+            if(route.params.replocation!=undefined){
+                setlocationname(route.params.replocation.name)
+                setLocationContent(route.params.replocation.content)
+            }
+        }
+    },[isfocused])
 
 
 
@@ -27,8 +41,8 @@ export default function AddLocation({route,navigation}:Props){
     return (
      <View>
         <Text>adds citues to {route.params.city.name}</Text>
-        <TextInput onChangeText={setlocationname} value={locationName} ></TextInput>
-        <TextInput onChangeText={setLocationContent} value={locationContent} ></TextInput>
+        <TextInput onChangeText={setlocationname} value={locationName} placeholder='Location name' ></TextInput>
+        <TextInput onChangeText={setLocationContent} value={locationContent} placeholder='what to do at the location' ></TextInput>
         <Button title='sumb' onPress={()=>{
 
         const loca={
@@ -48,8 +62,10 @@ export default function AddLocation({route,navigation}:Props){
 
         }else{
             c.locations.push(loca as Location)
-
         }
+
+        dbWrapper.ResetDb(context.cities)
+        
 
             
 

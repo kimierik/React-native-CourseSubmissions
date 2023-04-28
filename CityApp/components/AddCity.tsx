@@ -3,11 +3,13 @@ import {useContext, useState} from 'react';
 import {  Text, View , TextInput, Button} from 'react-native';
 import AppContext from '../modules/AppContext';
 import {City} from '../types/City';
+import { dbWrapper } from '../modules/DbWrapper';
 
 export default function AddCity(){
     const [cityName, setCityname]=useState<string>("");
     const [cityCountry, setCityCountry]=useState<string>("");
-    const asdf =useContext(AppContext)
+    const context =useContext(AppContext)
+
 
 
     return (
@@ -15,16 +17,21 @@ export default function AddCity(){
         <Text>adds citues</Text>
         <TextInput onChangeText={setCityname} value={cityName} placeholder='city name' ></TextInput>
         <TextInput onChangeText={setCityCountry} value={cityCountry} placeholder='country' ></TextInput>
-        <Button title='sumb' onPress={()=>{
-        const cit={
-            name:cityName,
-            country:cityCountry,
-            locations:undefined,
-            id:asdf.getid()
-        }
-        const narr=[...asdf.cities]
-        narr.push(cit);
-        asdf.cities=narr;// memory nuke
+        <Button title='add city' onPress={()=>{
+            const cit={
+                name:cityName,
+                country:cityCountry,
+                locations:undefined,
+                id:context.getid()
+            }
+            const narr=[...context.cities]
+            narr.push(cit);
+            context.cities=narr;// memory nuke
+            //dbWrapper.storeData(cit)
+            //context.updateCities()
+            dbWrapper.ResetDb(context.cities)
+
+
         }}/>
 
      </View>

@@ -9,7 +9,7 @@ type RootStackParams={
     Second:undefined;
     Home:undefined;
     AddCity:undefined;
-    AddLocation:{city:City};
+    AddLocation:{city:City, replocation:Location |undefined};
     Info:undefined;
     Locations:{city:City};// location data
 }

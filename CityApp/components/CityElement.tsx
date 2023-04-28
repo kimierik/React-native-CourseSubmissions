@@ -36,8 +36,9 @@ export default function CityElement(params:Cityparam){
      <View>
         <Text>{cname}</Text>
         <Text>{params.country}</Text>
+
             <Button
-                title='gotoscre'
+                title='locations'
                 onPress={()=>{navigation.navigate('Locations',{city:({name,country,locations,id})})}}
             />
 
