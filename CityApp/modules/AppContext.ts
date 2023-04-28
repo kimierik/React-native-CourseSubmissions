@@ -35,7 +35,6 @@ const defs : thing={
     },
 
     findCity:function(id:string):City|undefined{
-        console.log("findCity")
         let item=undefined
         this.cities.map((i)=>{
 

@@ -43,6 +43,10 @@ export default function AddLocation({route,navigation}:Props){
             content:locationContent,
             id:context.getid(),
         }
+       //if editing
+        if(route.params.replocation!=undefined){
+            context.removeLocation(c.id, route.params.replocation.id);
+        }
 
         if (c.locations==undefined){
             const lst:Location[]=[];
@@ -51,6 +55,8 @@ export default function AddLocation({route,navigation}:Props){
         }else{
             c.locations.push(loca as Location)
         }
+
+
 
         dbWrapper.ResetDb(context.cities)
     }
@@ -73,14 +79,6 @@ export default function AddLocation({route,navigation}:Props){
 
 
     )
-    /*
-     <View>
-        <Text>adds citues to {route.params.city.name}</Text>
-        <TextInput onChangeText={setlocationname} value={locationName} placeholder='Location name' ></TextInput>
-        <TextInput onChangeText={setLocationContent} value={locationContent} placeholder='what to do at the location' ></TextInput>
-        <Button title='sumb' onPress={()=>{buttonHandler()}}/>
-     </View>
-     * */
 }
 
 

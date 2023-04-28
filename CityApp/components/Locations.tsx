@@ -57,7 +57,9 @@ export default function Locations({route,navigation}:Props){
                     <Button
                         title='edit'
                         onPress={()=>{
-                            context.removeLocation(getcity().id, i.id);
+                            //context.removeLocation(getcity().id, i.id);
+                            //maybe not delete
+                            //if not null delete when add cityew
                             rerender();
                             navigation.navigate('AddLocation',{city:getcity(),replocation:i})
                             }}
