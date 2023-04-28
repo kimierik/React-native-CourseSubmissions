@@ -7,7 +7,6 @@ import RootStackParams from './types/navigation';
 
 
 //components
-import Comp from './components/Comp';
 import Home from './components/Home';
 import Info from './components/Info';
 import Locations from './components/Locations';
@@ -19,21 +18,12 @@ const Stack =createNativeStackNavigator<RootStackParams>();
 
 
 
-function Sec(){
-    return(
-    <View>
-        <Text>dfasljöjklafs</Text>
-    </View>
-    )
-}
 
 
 export default function App() {
   return (
   <NavigationContainer>
     <Stack.Navigator initialRouteName='Home'>
-        <Stack.Screen name="Comp" component={Comp}/>
-        <Stack.Screen name="Second" component={Sec}/>
 
         <Stack.Screen name="Home" component={Home}/>
         <Stack.Screen name="Info" component={Info}/>

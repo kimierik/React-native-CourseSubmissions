@@ -46,6 +46,20 @@ export default function Home(){
             setdata()
         }
     },[isfocused])
+    
+
+    //set title and info button 
+    useEffect(()=>{
+        navigation.setOptions({
+            title:'home',
+            headerRight:()=>(
+                <Button
+                    title='info'
+                    onPress={()=>{navigation.navigate('Info')}}
+                />
+            ),
+        });
+    });
 
 
     //re render cities

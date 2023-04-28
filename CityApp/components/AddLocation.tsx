@@ -14,7 +14,7 @@ import { dbWrapper } from '../modules/DbWrapper';
 
 
 type Props=NativeStackScreenProps<RootStackParams,"AddLocation","what">
-export default function AddLocation({route}:Props){
+export default function AddLocation({route,navigation}:Props){
     const [locationName, setlocationname]=useState<string>("");
     const [locationContent, setLocationContent]=useState<string>("");
     const context=useContext(AppContext)
@@ -28,6 +28,9 @@ export default function AddLocation({route}:Props){
         //when is focused and we are editing set name and content to what we are editing
         if(isfocused){
             if(isEditing){
+                navigation.setOptions({
+                    title:'edit Location'
+                })
                 setlocationname(route.params.replocation.name)
                 setLocationContent(route.params.replocation.content)
             }
@@ -61,7 +64,6 @@ export default function AddLocation({route}:Props){
 
     return (
      <View style={AddScreenStyle.container}>
-        <Text style={AddScreenStyle.title}>add locations to {route.params.city.name}</Text>
         <View style={AddScreenStyle.inputs}>
             <TextInput style={AddScreenStyle.tinp} onChangeText={setlocationname} value={locationName} placeholder='Location name' ></TextInput>
             <TextInput style={AddScreenStyle.tinp} onChangeText={setLocationContent} value={locationContent} placeholder='what to do at the location' ></TextInput>

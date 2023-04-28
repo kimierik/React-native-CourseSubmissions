@@ -1,5 +1,5 @@
 
-import { Text, View ,  Button} from 'react-native';
+import { Text, View ,  Button, TouchableHighlight} from 'react-native';
 import RootStackParams from '../types/navigation';
 import { Location } from '../types/City';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -31,16 +31,22 @@ export default function CityElement(params:Cityparam){
      <View style={ElementStyles.container}>
         <View style={ElementStyles.innerConteinaer}>
 
-            <View style={ElementStyles.txt}>
+            <TouchableHighlight style={ElementStyles.txt} onPress={()=>{
+                navigation.navigate('Locations',{city:({name,country,locations,id})})
+
+            }}>
+
+            <View style={ElementStyles.txt} >
                 <Text style={ElementStyles.name}>{cname}</Text>
                 <Text>{params.country}</Text>
             </View>
+            </TouchableHighlight>
 
             <View style={ElementStyles.buttons}>
                 <Button
-                    title='locations'
+                    title='edit'
                     onPress={()=>{
-                            navigation.navigate('Locations',{city:({name,country,locations,id})})
+                        navigation.navigate('AddCity',{repCity:{name,country,locations,id} })
                         }}
                 />
 
