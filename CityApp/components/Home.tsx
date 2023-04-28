@@ -1,6 +1,6 @@
 import {  Text, View, Button } from 'react-native';
-import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { NavigationContainer, useNavigation} from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigation} from '@react-navigation/native';
 import RootStackParams from '../types/navigation';
 import { ScrollView } from 'react-native';
 import CityElement from './CityElement';
@@ -9,17 +9,18 @@ import { City } from '../types/City';
 import { useContext } from 'react';
 
 import AppContext from '../modules/AppContext';
+import { StyleSheet } from 'react-native';
 
 import { SafeAreaView } from 'react-native';
 
 import {useIsFocused} from '@react-navigation/native'
-
-
 import { dbWrapper } from '../modules/DbWrapper';
 
-const cityContext=createContext('');
 
-export {cityContext}
+
+
+
+
 
 //has list of cities and button to add cities
 export default function Home(){
@@ -53,22 +54,16 @@ export default function Home(){
         setrencities(context.cities as City[]) 
     }
 
-  async function logdb(){console.log( await dbWrapper.LoadDB())}
 
     const elements = rencities.map((i)=>
         <CityElement {...i} key={context.getid()} fns={{rerender}} ></CityElement>
     )//again you are not being reactive
     
 
-    return (
-     <SafeAreaView>
-         <Text>this is home</Text>
-
-          <Button
-              title='+'
-              onPress={()=>{navigation.navigate('AddCity')}}//navigates to thing with name
-          />
-
+        //hoarded debug code
+    /*
+     *
+          async function logdb(){console.log( await dbWrapper.LoadDB())}
           <Button
               title='log'
               onPress={()=>{
@@ -79,13 +74,53 @@ export default function Home(){
               console.log("log end")
               }}//navigates to thing with name
           />
+      */
 
 
-        <ScrollView>
+
+
+
+    return (
+     <SafeAreaView style={styles.container}>
+         <Text style={styles.title}>List of cities around the world</Text>
+
+
+        <ScrollView style={styles.scroll }>
                 {elements}
         </ScrollView>
+
+        <View style={styles.budden}>
+
+          <Button
+              title='add Cities'
+              onPress={()=>{navigation.navigate('AddCity')}}//navigates to thing with name
+          />
+        </View>
         
      </SafeAreaView>
 
     )
 }
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  scroll:{
+    width:'100%',
+  },
+
+    budden:{
+        width:'100%',
+    },
+    title:{
+        fontSize:24,
+    }
+
+
+
+});

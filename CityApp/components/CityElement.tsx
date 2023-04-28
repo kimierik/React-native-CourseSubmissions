@@ -4,6 +4,7 @@ import {City} from '../types/City';
 import RootStackParams from '../types/navigation';
 
 import { Location } from '../types/City';
+import { StyleSheet } from 'react-native';
 
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { NavigationContainer, useNavigation} from '@react-navigation/native';
@@ -26,27 +27,68 @@ export default function CityElement(params:Cityparam){
     const {name,country,locations,id}=params
 
     const context=useContext(AppContext)
-    
 
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParams>>();
 
 
 
     return (
-     <View>
-        <Text>{cname}</Text>
-        <Text>{params.country}</Text>
+     <View style={styles.container}>
+        <View style={styles.innerConteinaer}>
 
-            <Button
-                title='locations'
-                onPress={()=>{navigation.navigate('Locations',{city:({name,country,locations,id})})}}
-            />
+            <View style={styles.txt}>
+                <Text style={styles.name}>{cname}</Text>
+                <Text>{params.country}</Text>
+            </View>
 
-            <Button
-                title='delete'
-                onPress={()=>{context.removeCity(params.id);setname("deleted") ;params.fns.rerender();}}
-            />
+            <View style={styles.buttons}>
+                <Button
+                    title='locations'
+                    onPress={()=>{navigation.navigate('Locations',{city:({name,country,locations,id})})}}
+                />
 
+                <Button
+                    color={'red'}
+                    title='delete'
+                    onPress={()=>{context.removeCity(params.id);setname("deleted") ;params.fns.rerender();}}
+                />
+            </View>
+
+        </View>
      </View>
     )
 }
+
+
+
+const styles = StyleSheet.create({
+    container: {
+        flex:1,
+        backgroundColor: '#fff',
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+
+        borderColor:'#000',
+        borderWidth:1,
+    },
+    innerConteinaer:{
+        width:'100%',
+        flexDirection:'row',
+    },
+
+    txt:{
+        width:'70%',
+        paddingLeft:20,
+    },
+
+    name:{
+        fontSize:24,
+    },
+
+    buttons:{
+        width:'30%',
+    }
+
+
+})
+
