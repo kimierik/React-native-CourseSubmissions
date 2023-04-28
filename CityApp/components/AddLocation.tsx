@@ -15,21 +15,20 @@ import { dbWrapper } from '../modules/DbWrapper';
 
 type Props=NativeStackScreenProps<RootStackParams,"AddLocation","what">
 export default function AddLocation({route,navigation}:Props){
-//this ptrob should have a refrence to the city that the location is being added to so that it goes to the propper place
     const [locationName, setlocationname]=useState<string>("");
     const [locationContent, setLocationContent]=useState<string>("");
-    const cit=route.params.city
-    const cont=useContext(AppContext);
-
-    const c=cont.findCity(cit.id);//this is recalled
-
     const context=useContext(AppContext)
     const isfocused=useIsFocused()
+    const isEditing= route.params.replocation!=undefined;
 
-    //use effect if this does not work the way i want it to work
+    const c=context.findCity(route.params.city.id);//this is recalled
+
+
+
     useEffect(()=>{
+        //when is focused and we are editing set name and content to what we are editing
         if(isfocused){
-            if(route.params.replocation!=undefined){
+            if(isEditing){
                 setlocationname(route.params.replocation.name)
                 setLocationContent(route.params.replocation.content)
             }
@@ -43,20 +42,18 @@ export default function AddLocation({route,navigation}:Props){
             content:locationContent,
             id:context.getid(),
         }
-       //if editing
-        if(route.params.replocation!=undefined){
+        //if we are editin remove the previous item and add this in its place
+        if(isEditing){
             context.removeLocation(c.id, route.params.replocation.id);
         }
 
         if (c.locations==undefined){
             const lst:Location[]=[];
             lst.push(loca as Location)
-            c.locations = [...lst] 
+            c.locations = [...lst] //spread was needed 
         }else{
             c.locations.push(loca as Location)
         }
-
-
 
         dbWrapper.ResetDb(context.cities)
     }
