@@ -56,8 +56,6 @@ export default function Locations({route,navigation}:Props){
     return (
      <View style={ListStyles.container}>
         <Text style={ListStyles.title}>these are the locations of {getcity().name}</Text>
-
-
         <ScrollView style={ListStyles.scroll}>
             {elements}
         </ScrollView>
@@ -68,8 +66,6 @@ export default function Locations({route,navigation}:Props){
               onPress={()=>{navigation.navigate('AddLocation',{city:getcity(),replocation:undefined})}}//navigates to thing with name
           />
         </View>
-
-
      </View>
      )
 }
