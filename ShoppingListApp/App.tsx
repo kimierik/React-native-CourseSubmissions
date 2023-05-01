@@ -9,12 +9,13 @@ import Rtk from './StateManagement/Rtk';
 
 import {Provider } from 'react-redux';
 
-import { addItem} from './StateManagement/Rtk';
 import Item from './types/Item'
 
 import { useState } from 'react';
+import { useEffect } from 'react';
+import { dbWrapper } from './modules/DbWrapper';
 
-//wtf
+import { hydrate } from './StateManagement/Rtk';
 
 
 
@@ -23,11 +24,22 @@ export default function App() {
     const [items,setItems]=useState<Item[]>([])
 
 
-    //this function only exists to cast shoppinglist to Item[] so that typescript is happy
     function getItems(){
         setItems(Rtk.getState().snobbing_list)
     }
     Rtk.subscribe(()=>{getItems()})
+
+    async function setData(){
+        const data=await dbWrapper.LoadDB()
+        setItems(data)
+        Rtk.dispatch(hydrate(data))
+    }
+
+    useEffect(()=>{
+        setData()
+    },[])
+
+    
     
 
     return (
