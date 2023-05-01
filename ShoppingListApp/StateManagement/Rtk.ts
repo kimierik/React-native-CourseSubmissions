@@ -6,11 +6,11 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 
 interface appstate{
-    snobbing_list:Item[];
+    shoppingList:Item[];
 }
 
 const thing={
-    snobbing_list:[]
+    shoppingList:[]
 }
 
 const snobbingSlice=createSlice({
@@ -20,24 +20,29 @@ const snobbingSlice=createSlice({
 
         /*
         * hydrates state. 
-        * @param {Item[]} items should be data brom the db
+        * items should be contents of db
         * */
         hydrate:(state:appstate,items:PayloadAction<Item[]>)=>{
-            state.snobbing_list=items.payload
+            state.shoppingList=items.payload
         },
 
+        //adds item
         addItem:(state:appstate,item:PayloadAction<Item> )=>{ 
-            state.snobbing_list.push(item.payload)
+            state.shoppingList.push(item.payload)
             dbWrapper.storeData(item.payload)
         },
+        
+        //logs state to console. also updates all subscibers
         logstate:(state:appstate)=>{ 
             console.log("teststate")
-            console.log(state.snobbing_list)
+            console.log(state.shoppingList)
         },
+
+        //removes item
         removeItem:(state:appstate,id:PayloadAction<string> )=>{
-            state.snobbing_list.map((item,index)=>{
+            state.shoppingList.map((item,index)=>{
                 if(item.id==id.payload){
-                    state.snobbing_list.splice(index,1)
+                    state.shoppingList.splice(index,1)
                     dbWrapper.DeleteSingle(id.payload)
                 }
             })

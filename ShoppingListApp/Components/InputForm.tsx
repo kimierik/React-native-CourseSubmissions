@@ -5,7 +5,7 @@ import { useState } from "react"
 
 
 import Rtk from "../StateManagement/Rtk"
-import { addItem, logstate } from "../StateManagement/Rtk"
+import { addItem } from "../StateManagement/Rtk"
 
 
 
@@ -16,9 +16,10 @@ export default function InputForm(){
     //this prevents quantity from being nan
     function changeQuantity(i:string){ 
         const n=parseInt(i).toString();
-        setQuantity(n=="NaN"?"":n)
+        setQuantity(n=="NaN"  ? "":n)
     }
 
+    //generates random id
     function getId(){
         return Math.random().toString();
     }
@@ -26,7 +27,7 @@ export default function InputForm(){
 
     return(
         <View style={styles.container}>
-            <Text>add snobbing item</Text>
+            <Text style={styles.title}>add items to the ShoppingList</Text>
 
             <TextInput
                 style={styles.inputs}
@@ -46,8 +47,14 @@ export default function InputForm(){
 
             <Button 
                 title="add item"
-                onPress={()=>{ Rtk.dispatch(addItem({name,quantity:parseInt(quantity),id:getId()}))}}
-            />
+                onPress={()=>{ 
+                Rtk.dispatch(addItem(
+                                    {
+                                        name,
+                                        quantity:parseInt(quantity==""?"1":quantity),
+                                        id:getId()}
+                                    )
+                            )}} />
 
         </View>
     )
@@ -70,6 +77,9 @@ const styles=StyleSheet.create({
         height:50,
         marginBottom:5,
         marginTop:5,
+    },
+    title:{
+        fontSize:20,
     },
 
 })

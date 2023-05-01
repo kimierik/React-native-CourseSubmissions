@@ -1,13 +1,9 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
-
+import { StyleSheet,  View, FlatList } from 'react-native';
 
 import InputForm from './Components/InputForm';
 import Header from './Components/Header';
 import ShoppingItem from './Components/ShoppingItem';
 import Rtk from './StateManagement/Rtk';
-
-import {Provider } from 'react-redux';
 
 import Item from './types/Item'
 
@@ -19,45 +15,36 @@ import { hydrate } from './StateManagement/Rtk';
 
 
 
-
 export default function App() {
-    const [items,setItems]=useState<Item[]>([])
+    const [items,setItems]=useState<Item[]>([])//displayed items
 
+    //when something changes in the store we set the rendered items to be what is in the shopping list
+    Rtk.subscribe(()=>{ setItems(Rtk.getState().shoppingList) }) 
 
-    function getItems(){
-        setItems(Rtk.getState().snobbing_list)
-    }
-    Rtk.subscribe(()=>{getItems()})
-
+    //loads what is in the db and hydrates the list in state manager
     async function setData(){
         const data=await dbWrapper.LoadDB()
         setItems(data)
         Rtk.dispatch(hydrate(data))
     }
 
+    //on load of page
     useEffect(()=>{
         setData()
     },[])
-
-    
     
 
     return (
         <View style={styles.container}>
-
-        <Provider store={Rtk}>
-            <Header></Header>
-            <InputForm></InputForm>
-
+            <Header/>
+            <InputForm/>
             <FlatList
                 style={styles.list}
                 data={items}
                 renderItem={({item} )=>(
                     <ShoppingItem {...item}></ShoppingItem>
                 )}
-            ></FlatList>
-        </Provider>
-
+            />
         </View>
       );
 }
@@ -70,6 +57,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
       },
         list:{
-            width:'50%',
+            width:'60%',
       },
 });

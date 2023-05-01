@@ -1,4 +1,4 @@
-import { View, Text, Button, StyleSheet } from "react-native"
+import { View, Text, ScrollView , StyleSheet, TouchableHighlight,Image } from "react-native"
 
 import Item from "../types/Item"
 
@@ -12,27 +12,28 @@ export default function ShoppingItem(props:Item){
 
     return(
         <View style={styles.container}>
-
             <View style={styles.innercontainer}>
-
-            
                 <View style={styles.text}>
-                    <Text>{props.name} X{props.quantity}</Text>
+                    <ScrollView>
+                        <Text style={styles.textContent}>{props.name} X{props.quantity}</Text>
+                    </ScrollView>
                 </View>
-
                 <View style={styles.button}>
-                    <Button
-                        title="d"
-                        onPress={()=>{Rtk.dispatch(removeItem(props.id))}}
-                    />
+                    <TouchableHighlight onPress={()=>{Rtk.dispatch(removeItem(props.id))}} >
+                        <Image
+                            style={styles.image}
+                            source={require('../assets/bin.png')}
+                        />
+                    </TouchableHighlight>
                 </View>
-
-            
             </View>
         </View>
     )
 
 }
+
+
+
 
 
 const styles=StyleSheet.create({
@@ -42,6 +43,9 @@ const styles=StyleSheet.create({
         justifyContent:'center',
         borderColor:'#000',
         borderWidth:2,
+        height:45,
+        marginBottom:5,
+        marginTop:5,
     },
 
     innercontainer:{
@@ -50,9 +54,19 @@ const styles=StyleSheet.create({
         alignItems:'center',
         justifyContent:'center',
     },
+    image:{
+        borderWidth:1,
+        borderColor:'#000',
+        width:'100%',
+        height:'100%',
+        backgroundColor:'red',
+    },
 
     text:{
-        width:'80%'
+        width:'80%',
+    },
+    textContent:{
+        fontSize:30,
     },
 
 
